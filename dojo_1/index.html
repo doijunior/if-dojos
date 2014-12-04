@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.1.1/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-2.1.1/jasmine.css"> 
+
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.1.1/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.1.1/jasmine-html.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.1.1/boot.js"></script>
+    <script type="text/javascript">
+      describe("O formulario", function() {
+	it("possui um input chamado input do tipo text", function() {
+	  var input = document.getElementById("input");
+	  expect(input.type).toBe("text");
+	});
+	it("possui um input chamado output do tipo text", function() {
+	  var output = document.getElementById("output");
+	  expect(output.type).toBe("text");
+	});
+	it("possui um input chamado output desabilitado", function() {
+	  var output = document.getElementById("output");
+	  expect(output.disabled).toBe(true);
+	});
+      });
+      describe("O saldo", function(){
+	it("é mutiplo de 5", function(){
+		var saldo = 25;
+		var multiplo = multiplo5(saldo);
+		expect(multiplo).toBe(true);
+	});
+	it("não é mutiplo de 5", function(){
+		var saldo = 22;
+		var multiplo = multiplo5(saldo);
+		expect(multiplo).toBe(false);
+	});
+	it("é positivo e menor que 2000", function(){
+		var saldo = 4;
+		var saldopositivo = positivo(saldo);
+		expect(saldopositivo).toBe(true);
+	});
+	it("é maior que o valor de saque", function(){
+		var saldo = 7;
+		var saque = 4;
+		var debito = sacar(saldo, saque);
+		expect(debito).toBe(true);
+	});
+	it("é debitado quando o valor do saque é multiplo de 5 e menor que o saldo", function(){
+		var saldo = 10;
+		var saque = 5;
+		var result = realizarsaque(saldo, saque);
+		expect(result).toBe(4.5);
+	});
+	it("nao eh debitado quando o valor do saque não é multiplo de 5", function(){
+		var saldo = 10;
+		var saque = 4;
+		var result = realizarsaque(saldo, saque);
+		expect(result).toBe(10);
+	});
+	it("não é debitado quando o valor do saque é maior que o saldo", function(){
+		var saldo = 10;
+		var saque = 11;
+		var result = realizarsaque(saldo, saque);
+		expect(result).toBe(10);
+	});
+      });
+    </script>
+    <script type="text/javascript">
+      function multiplo5(saldo){
+	if((saldo % 5) === 0){
+	  return true;
+	}
+	return false;
+      }
+      function positivo(saldo){
+	if(saldo>0 && saldo <= 2000){
+	  return true;
+	}
+	return false;
+      }
+      function sacar(saldo, saque){
+	if(saldo>(saque+0.5)){
+	  return true;
+	}
+	return false;
+      }
+      
+      function realizarsaque(saldo, saque){
+	if (positivo(saldo) && sacar(saldo, saque) && multiplo5(saque)){
+	  result = saldo - (saque+0.5);
+	  return result;		
+	}
+	return saldo;
+      }
+      function efetuarSaque(){
+	var saldo = parseInt(document.getElementById("saldo").value);
+	var saque = parseInt(document.getElementById("input").value);
+	var resultado = realizarsaque(saldo, saque);
+	document.getElementById("output").value = resultado;
+      }
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <form>
+      <label for="input">X:</label><br/>
+      <input type="text" id="input"><br/>
+      <label for="saldo">Y:</label><br/>
+      <input type="text" id="saldo">
+      <button type="button" onclick="efetuarSaque()">sacar</button><br/>
+      <input type="text" id="output" disabled>
+    </form>
+  </body>
+</html>
